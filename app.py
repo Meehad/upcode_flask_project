@@ -22,6 +22,7 @@ def hello():
     <p>you can use GET /api/products to get details of all products<p>
     <p>you can use GET /api/products/id to get details of a specific product using id<p>
     <p>you can use POST /api/products to add new product to products<p>
+    <p>you can use PUT /api/products/id to edit a product in products<p>
     """
 
 
@@ -50,5 +51,18 @@ def add_product():
     data.append(new_data)
     save_product(data)
     return new_data
+
+@app.route('/api/products/<int:id>', methods=['PUT'])
+def update_data(id):
+    data = load_products_data()
+    product = None
+    for d in data:
+        if d["id"] == id:
+            product = d
+            break
+    updated_data = request.json
+    product.update(updated_data)
+    save_product(data)
+    return updated_data
 
 app.run(debug=True)
