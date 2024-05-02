@@ -17,12 +17,27 @@ def welcome():
 @app.route('/api', methods=['GET'])
 def hello():
     return """<h1>This is my api</h1>
-    <p>you can use GET /api/products to get details of all products<p>"""
+    <p>you can use GET /api/products to get details of all products<p>
+    <p>you can use GET /api/products/id to get details of a specific product using id<p>
+    """
 
 
 @app.route('/api/products', methods=['GET'])
 def get_products():
     data = load_products_data()
     return jsonify(data)
+
+@app.route('/api/products/<int:id>', methods=['GET'])
+def get_product(id):
+    data = load_products_data()
+    product = None
+    for d in data:
+        if d["id"] == id:
+            product = d
+            break
+    if (product):
+        return jsonify(product)
+    else:
+        (f'product with {id} not found', 404)
 
 app.run(debug=True)
