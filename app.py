@@ -23,6 +23,7 @@ def hello():
     <p>you can use GET /api/products/id to get details of a specific product using id<p>
     <p>you can use POST /api/products to add new product to products<p>
     <p>you can use PUT /api/products/id to edit a product in products<p>
+    <p>you can use DELETE /api/products/id to delete a product in products<p>
     """
 
 
@@ -64,5 +65,12 @@ def update_data(id):
     product.update(updated_data)
     save_product(data)
     return updated_data
+
+@app.route('/api/products/<int:id>', methods=['DELETE'])
+def delete_data(id):
+    data = load_products_data()
+    updated_data = list(filter(lambda d: d['id'] != id,data))
+    save_product(updated_data)
+    return "Deleted successfully",204
 
 app.run(debug=True)
